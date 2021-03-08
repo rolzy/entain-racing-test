@@ -7,7 +7,8 @@ import (
 	"strings"
 	"sync"
 	"time"
-
+	log "github.com/sirupsen/logrus"
+    "fmt"
 	"git.neds.sh/matty/entain/racing/proto/racing"
 )
 
@@ -49,6 +50,7 @@ func (r *racesRepo) List(filter *racing.ListRacesRequestFilter) ([]*racing.Race,
 		args  []interface{}
 	)
 
+	log.Infof("listing races")
 	query = getRaceQueries()[racesList]
 
 	query, args = r.applyFilter(query, filter)
@@ -71,10 +73,12 @@ func (r *racesRepo) applyFilter(query string, filter *racing.ListRacesRequestFil
 		return query, args
 	}
 
-    //TASK 1: Filter visible races by adding a SQL clause
+	log.Infof("applying filter")
     if filter.FilterVisibleRaces {
         clauses = append(clauses,"visible = true")
+        log.Infof("displaying visible races only")
     }
+    fmt.Printf("%v\n", filter.MeetingIds)
 	if len(filter.MeetingIds) > 0 {
 		clauses = append(clauses, "meeting_id IN ("+strings.Repeat("?,", len(filter.MeetingIds)-1)+"?)")
 
@@ -86,6 +90,11 @@ func (r *racesRepo) applyFilter(query string, filter *racing.ListRacesRequestFil
 	if len(clauses) != 0 {
 		query += " WHERE " + strings.Join(clauses, " AND ")
 	}
+
+    // TASK2: Order the races by advertised start time
+    query += " ORDER BY advertised_start_time"
+    fmt.Printf("%v\n", clauses)
+    fmt.Printf("%v\n", query)
 
 	return query, args
 }
