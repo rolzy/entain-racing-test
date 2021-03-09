@@ -87,6 +87,9 @@ func (r *racesRepo) applyFilter(query string, filter *racing.ListRacesRequestFil
 		query += " WHERE " + strings.Join(clauses, " AND ")
 	}
 
+    // TASK2: Order the races by advertised start time
+    query += " ORDER BY advertised_start_time"
+
 	return query, args
 }
 
