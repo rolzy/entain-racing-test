@@ -8,10 +8,24 @@ service Racing {
   rpc ListRaces(ListRacesRequest) returns (ListRacesResponse) {}
 }
 
+/* Views */
+
+enum RaceView {
+    // The default value. Since the default behaviour is not specified in
+    // the task sheet, set it to the basic setting. 
+    RACE_VIEW_UNSPECIFIED = 0;
+
+    // Only include the race name and number in the response.
+    BASIC = 1;
+
+    // Include Everything.
+    FULL = 2;
+}
 /* Requests/Responses */
 
 message ListRacesRequest {
   ListRacesRequestFilter filter = 1;
+  RaceView view = 2;
 }
 
 // Response to ListRaces call.

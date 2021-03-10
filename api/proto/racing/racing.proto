@@ -7,15 +7,32 @@ import "google/api/annotations.proto";
 service Racing {
   // ListRaces returns a list of all races.
   rpc ListRaces(ListRacesRequest) returns (ListRacesResponse) {
-    option (google.api.http) = { post: "/v1/list-races", body: "*" };
+    option (google.api.http) = {
+      post: "/v1/list-races",
+      body: "*" 
+    };
   }
+}
+
+/* Views */
+
+enum RaceView {
+    // The default value. Since the default behaviour is not specified in
+    // the task sheet, set it to the basic setting. 
+    RACE_VIEW_UNSPECIFIED = 0;
+
+    // Only include the race name and number in the response.
+    BASIC = 1;
+
+    // Include Everything.
+    FULL = 2;
 }
 
 /* Requests/Responses */
 
-// Request for ListRaces call.
 message ListRacesRequest {
   ListRacesRequestFilter filter = 1;
+  RaceView view = 2;
 }
 
 // Response to ListRaces call.
