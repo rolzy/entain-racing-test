@@ -10,6 +10,9 @@ import (
 type Racing interface {
 	// ListRaces will return a collection of races.
 	ListRaces(ctx context.Context, in *racing.ListRacesRequest) (*racing.ListRacesResponse, error)
+
+	// GetRace will fetch a single race from an id
+	GetRace(ctx context.Context, in *racing.GetRaceRequest) (*racing.GetRaceResponse, error)
 }
 
 // racingService implements the Racing interface.
@@ -20,6 +23,16 @@ type racingService struct {
 // NewRacingService instantiates and returns a new racingService.
 func NewRacingService(racesRepo db.RacesRepo) Racing {
 	return &racingService{racesRepo}
+}
+
+// Get single instance of race
+func (s *racingService) GetRace(ctx context.Context, in *racing.GetRaceRequest) (*racing.GetRaceResponse, error) {
+    race, err := s.racesRepo.Get(in.Id)
+	if err != nil {
+		return nil, err
+	}
+
+    return &racing.GetRaceResponse{Race: race}, nil
 }
 
 func (s *racingService) ListRaces(ctx context.Context, in *racing.ListRacesRequest) (*racing.ListRacesResponse, error) {
