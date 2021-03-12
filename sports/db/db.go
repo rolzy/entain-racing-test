@@ -13,6 +13,9 @@ func (s *sportsRepo) seed() error {
 
     sports_array := []string{"Football","Australian Rules Football","Rugby League","Cricket","American Football","Basketball","Baseball","Tennis","Rugby Union","Motor Sports"}
 	for i := 1; i <= 100; i++ {
+        // Create fake sports events using faker.
+        // For the sports name, I created an array of sports name and used faker.RandomChoice.
+        // For the event name, a suitable Faker() type was not found. 
 		statement, err = s.db.Prepare(`INSERT OR IGNORE INTO sports(id, type, name, advertised_start_time) VALUES (?,?,?,?)`)
 		if err == nil {
 			_, err = statement.Exec(

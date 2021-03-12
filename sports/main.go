@@ -1,5 +1,7 @@
 package main
 
+// I created a module using my github account. 
+// Took me a while to realise that proto imports won't work until I run protoc...
 import (
 	"database/sql"
 	"flag"
